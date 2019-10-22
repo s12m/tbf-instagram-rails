@@ -1,0 +1,13 @@
+<h1>Instagram clone with Ruby on Rails</h1>
+
+<ul>
+  <% @posts.each do |post| %>
+    <li>
+      <%= simple_format(post.body) %>
+      <small>
+        <%= post.user.email %>
+        /
+        <%= l(post.created_at) %>
+      </small>
+  <% end %>
+</ul>

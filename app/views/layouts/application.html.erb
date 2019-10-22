@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <title>TbfInstagramRails</title>
+    <title>Instagram clone with Ruby on Rails</title>
     <%= csrf_meta_tags %>
     <%= csp_meta_tag %>
 
@@ -11,5 +11,14 @@
 
   <body>
     <%= yield %>
+    <footer>
+      <%= link_to 'Top', root_path %>
+      <% if user_signed_in? %>
+        <%= link_to 'Your posts', posts_path %>
+        <%= link_to 'Sign out', destroy_user_session_path, method: :delete %>
+      <% else %>
+        <%= link_to 'Sign in', new_user_session_path %>
+      <% end %>
+    </footer>
   </body>
 </html>
