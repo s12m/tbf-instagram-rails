@@ -1,0 +1,25 @@
+<% posts.each_slice(3) do |posts| %>
+  <div class="row">
+    <% posts.each do |post| %>
+      <div class="col-4 p-1">
+        <div class="card">
+          <%= image_tag post.image, class: 'card-img-top' %>
+          <div class="card-body">
+            <%= simple_format(post.body, class: 'card-text') %>
+            <small class="d-block">
+              Posted by
+              <% if post.user == current_user %>
+                you
+                <%= link_to 'Edit', edit_post_path(post), class: 'text-primary' %>
+                <%= link_to 'Delete', post_path(post), class: 'text-danger', method: :delete, data: { confirm: 'Are you sure?' } %>
+              <% else %>
+                <%= post.user.email %>
+              <% end %>
+            </small>
+            <small class="d-block" title="<%= post.created_at %>"><%= time_ago_in_words(post.created_at) %></small>
+          </div>
+        </div>
+      </div>
+    <% end %>
+  </div>
+<% end %>
