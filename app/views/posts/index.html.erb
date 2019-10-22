@@ -5,6 +5,7 @@
 <table>
   <thead>
     <tr>
+      <th>Image</th>
       <th>Body</th>
       <th>Created at</th>
       <th>Updated at</th>
@@ -15,6 +16,7 @@
   <tbody>
     <% @posts.each do |post| %>
       <tr>
+        <td><%= image_tag post.image, width: 100 %></td>
         <td><%= post.body %></td>
         <td><%= l(post.created_at) %></td>
         <td><%= l(post.updated_at) %></td>

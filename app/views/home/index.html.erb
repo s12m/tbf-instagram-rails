@@ -3,6 +3,7 @@
 <ul>
   <% @posts.each do |post| %>
     <li>
+      <%= image_tag post.image, width: 300 %>
       <%= simple_format(post.body) %>
       <small>
         <%= post.user.email %>
