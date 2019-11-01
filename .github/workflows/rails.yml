@@ -1,0 +1,24 @@
+name: Rails
+on: [push]
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    services:
+      postgres:
+        image: postgres:12-alpine
+        env:
+          POSTGRES_DB: test
+    container:
+      image: ruby:2.6.5-alpine
+      env:
+        DATABASE_URL: postgresql://postgres:5432/test?user=postgres&password=postgres
+    steps:
+      - uses: actions/checkout@v1
+      - name: Setup
+        run: |
+          apk add build-base postgresql-dev tzdata yarn
+          bundle install --jobs 4
+          yarn install
+      - name: Run test
+        run: |
+          bundle exec rspec
