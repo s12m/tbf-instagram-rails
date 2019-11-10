@@ -1,0 +1,38 @@
+FROM node:10 as node
+FROM ruby:2.6.5
+
+ENV LANG C.UTF-8
+ENV YARN_VERSION 1.19.1
+
+ENV APP_HOME /app
+RUN mkdir -p $APP_HOME
+WORKDIR $APP_HOME
+
+RUN apt-get update -qq \
+  && apt-get install -y --no-install-recommends \
+  graphviz \
+  && rm -rf /var/lib/apt/lists/*
+
+RUN curl -sL https://deb.nodesource.com/setup_10.x | bash - && \
+  apt-get install nodejs
+
+COPY --from=node /opt/yarn-v$YARN_VERSION /opt/yarn
+COPY --from=node /usr/local/bin/node /usr/local/bin/
+
+RUN ln -s /opt/yarn/bin/yarn /usr/local/bin/yarn \
+  && ln -s /opt/yarn/bin/yarnpkg /usr/local/bin/yarnpkg
+
+ENV BUNDLE_GEMFILE=$APP_HOME/Gemfile \
+  BUNDLE_JOBS=2
+
+ADD Gemfile* $APP_HOME/
+ENV BUNDLE_GEMFILE=$APP_HOME/Gemfile \
+  BUNDLE_JOBS=2
+RUN bundle install
+
+ADD package.json* $APP_HOME/
+ADD yarn.lock* $APP_HOME/
+RUN yarn install
+
+WORKDIR $APP_HOME
+ADD . $APP_HOME
