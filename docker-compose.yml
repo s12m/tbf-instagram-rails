@@ -12,8 +12,8 @@ services:
   app:
     build:
       context: .
-      dockerfile: ./Dockerfile.development
-    command: bash -c 'rm -f tmp/pids/server.pid && bundle exec rails s -b 0.0.0.0 -p 3000'
+      dockerfile: ./Dockerfile
+    command: sh -c 'rm -f tmp/pids/server.pid && bundle exec rails s -b 0.0.0.0 -p 3000'
     volumes:
       - .:/app
       - bundle:/usr/local/bundle
@@ -26,6 +26,7 @@ services:
       DB_NAME: rails_db
       DB_PASSWORD: password
       DB_HOST: db
+      DATABASE_URL: postgresql://postgres:password@db:5432/tbf_instagram_rails_development
     tty: true
     stdin_open: true
 volumes:
