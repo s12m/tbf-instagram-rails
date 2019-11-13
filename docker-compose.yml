@@ -1,0 +1,36 @@
+version: '3'
+services:
+  db:
+    image: postgres:10-alpine
+    volumes:
+      - db:/var/lib/postgresql/data
+  data:
+    image: busybox
+    volumes:
+      - db:/var/lib/postgresql/data
+      - bundle:/usr/local/bundle
+  app:
+    build:
+      context: .
+      dockerfile: ./Dockerfile
+    command: sh -c 'rm -f tmp/pids/server.pid && bundle exec rails s -b 0.0.0.0 -p 3000'
+    volumes:
+      - .:/app
+      - bundle:/usr/local/bundle
+    depends_on:
+      - db
+    links:
+      - db
+    environment:
+      DB_USER: postgres
+      DB_NAME: rails_db
+      DB_PASSWORD: password
+      DB_HOST: db
+      DATABASE_URL: postgresql://postgres:password@db:5432/tbf_instagram_rails_development
+    tty: true
+    stdin_open: true
+volumes:
+  db:
+    driver: local
+  bundle:
+    driver: local
