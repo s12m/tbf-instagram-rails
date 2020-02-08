@@ -1,24 +1,23 @@
-# README
+# 技術書典8 Rails版サンプルコード
 
-This README would normally document whatever steps are necessary to get the
-application up and running.
+技術書典8で頒布した書籍「RailsエンジニアのためのElixir/Phoenix」のRails版サンプルコードです。
 
-Things you may want to cover:
+## 必要なもの
 
-* Ruby version
+- Ruby 2.6.5
+- Node.js 12.13.0
+- yarn >= 0.0.0
 
-* System dependencies
+## セットアップ
 
-* Configuration
+```
+$ bin/setup
+```
 
-* Database creation
+## 起動
 
-* Database initialization
+```
+$ bin/rails s
+```
 
-* How to run the test suite
-
-* Services (job queues, cache servers, search engines, etc.)
-
-* Deployment instructions
-
-* ...
+http://localhost:3000
