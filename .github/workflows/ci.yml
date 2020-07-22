@@ -1,0 +1,45 @@
+name: CI
+on: [push]
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    services:
+      postgres:
+        image: postgres:12-alpine
+        env:
+          POSTGRES_USER: postgres
+          POSTGRES_PASSWORD: postgres
+    container:	
+      image: ruby:2.6.5-alpine
+      env:
+        DATABASE_URL: postgresql://postgres:postgres@postgres:5432/test
+    steps:
+      - name: Install dependencies
+        run: |
+          apk add build-base postgresql-dev tzdata yarn
+      - uses: actions/checkout@v2
+      - uses: actions/cache@v1
+        with:
+          path: vendor/bundle
+          key: ${{ runner.os }}-gems-${{ hashFiles('**/Gemfile.lock') }}
+          restore-keys: |
+            ${{ runner.os }}-gems-
+      - name: Get yarn cache directory path
+        id: yarn-cache-dir-path
+        run: echo "::set-output name=dir::$(yarn cache dir)"
+      - uses: actions/cache@v1
+        with:
+          path: ${{ steps.yarn-cache-dir-path.outputs.dir }}
+          key: ${{ runner.os }}-yarn-${{ hashFiles('**/yarn.lock') }}
+          restore-keys: |
+            ${{ runner.os }}-yarn-
+      - name: Setup
+        run: |
+          bundle install -j4 --clean --path vendor/bundle
+          yarn install
+          bundle exec rails db:create db:schema:load
+        env:
+          RAILS_ENV: test
+      - name: Run test
+        run: 
+          bundle exec rspec
