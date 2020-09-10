@@ -1,6 +1,4 @@
-# ~~技術書典8~~ 技術書典 応援祭 Rails版サンプルコード
-
-~~技術書典8~~ 技術書典 応援祭 で頒布した書籍「RailsエンジニアのためのElixir/Phoenix」のRails版サンプルコードです。
+# 『RailsエンジニアのためのElixir/Phoenix』Rails版サンプルコード
 
 ## 必要なもの
 
